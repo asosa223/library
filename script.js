@@ -8,7 +8,7 @@
     //button will display a form page ✅
         //form input will be author, title, pages, have read or have not read✅
         //user will submit and pass object✅
-//add a button that will remove book from webpage
+//add a button that will remove book from webpage ✅
 //add a button that will change its read status
 
 let myLibrary = [];
@@ -18,9 +18,9 @@ const form = document.getElementById('form');
 let title = document.getElementById('title');
 let author = document.getElementById('author');
 let pages = document.getElementById('pages');
-//let read = true;
-const haveRead = document.getElementById('have-read');
-const haveNotRead = document.getElementById('have-not-read');
+let haveRead = document.getElementById('have-read');
+
+
 
 addNewBookBtn.addEventListener('click', () => {
 
@@ -42,9 +42,9 @@ function Book(title, author, pages, read) {
 }
 
 //GET BOOK INFO
-//Book.prototype.info = function() {
-//    return `${this.title} by ${this.author}, ${this.pages} pages, You ${this.read}`;
-//}
+Book.prototype.info = function() {
+    return `${this.title} by ${this.author}, ${this.pages} pages, You ${this.read}`;
+}
 
 //Adds book object into my library array
 function addBookToLibrary(book) {
@@ -59,73 +59,55 @@ function createBook() {
         addBookToLibrary(userBook);
         addBookToTable();
         form.style.display = 'none';
+        title.value = '';
+        author.value = '';
+        pages.value = '';
+        haveRead.checked = false;
     });
 }
 
-//book is created by:
-    //user enters book info into form
-    //when submit is clicked, info is passed to createBook function
-        //refresh is prevented
-        //new book object is created
-        //book object is pushed into myLibrary array
-        //add to table function is called
-        //last object in array is stored in lastObj var
-        //we loop through last object and grab each value
-        //it is then stored into tr html string
-        //tr is then appended into table
-//I need to remove book from table
-    //issue: last object is always grabbed from my library array
-        //I could tie a class/id/data-atrribute to tr with index
-    //Issue: add book to table function will loop through whole array instead of last object in array
-
-//function addBookToTable() {
-//    const table = document.getElementById('table');
-//    let lastObj = myLibrary[myLibrary.length - 1]; //get last object in my library 
-//    let tr = `<tr>`;
-//
-//    for (let value in lastObj){
-//        let i = 0;
-//        tr += `<td class="id=tr-${i}"> ${lastObj[value]} </td>`;
-//    }
-//
-//    table.innerHTML += tr;  
-//}
 
 function addBookToTable() {
     const table = document.getElementById('table');
-    let i = 0;
 
-    //for (let i = 0; i < myLibrary[myLibrary.length - 1]; i++)
-    do {
-        let bookObj = myLibrary[myLibrary.length - 1];
-        i++;
-
+    for (let i = 0; i < 1; i++) {
+        let bookObj = myLibrary[myLibrary.length - 1]; //Stores last book object in array
         let row = document.createElement('tr');
-        row.className = `tr-${i}`;
-
+        row.className = `tr-${myLibrary.length - 1}`;
+        
         let properties = ['title', 'author', 'pages', 'read'];
-    
+
         for (let j = 0; j < properties.length; j++) {
             let cell = document.createElement('td');
             cell.innerHTML = bookObj[properties[j]];
             row.appendChild(cell);
         }
 
+        let td = document.createElement('td');
+        let btn = document.createElement("button");
+        btn.innerHTML = 'remove';
+
+        td.appendChild(btn);
+        row.appendChild(td);
         table.appendChild(row);
-    } while (i < 1);
+
+        btn.addEventListener('click', (e) => {
+            row.remove();
+        })
+    }
 }
 
    
 
 function read() {
-    if (haveRead.checked === true && haveNotRead.checked === false) {
+    let readBtn = document.createElement('button');
+    readBtn.innerHTML = 'read';
+
+    if (haveRead.checked === true) {
         return 'Have Read';
     }
-    else if (haveNotRead.checked === true && haveRead.checked === false) {
-        return 'Have Not Read';
-    }
     else {
-        alert('error'); 
+        return 'Have Not Read';
     }
 }
 
